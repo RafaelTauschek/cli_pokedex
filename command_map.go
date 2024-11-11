@@ -19,7 +19,7 @@ type LocationsResultJSON struct {
 	URL  string `json:"url"`
 }
 
-func callbackMap(c *Client) error {
+func callbackMap(c *Client, params string) error {
 	if c.nextLocationURL == nil {
 		fmt.Println("You're already at the end!")
 		return nil
@@ -57,7 +57,7 @@ func callbackMap(c *Client) error {
 	return nil
 }
 
-func callbackMapB(c *Client) error {
+func callbackMapB(c *Client, params string) error {
 	if c.prevLocationURL == nil {
 		fmt.Println("You're already at the start!")
 		return nil

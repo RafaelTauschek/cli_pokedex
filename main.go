@@ -26,6 +26,11 @@ func startRepl(c *Client) {
 		}
 		commandName := cleaned[0]
 
+		var params = ""
+		if len(cleaned) > 1 {
+			params = cleaned[1]
+		}
+
 		availableCommands := getComamnds()
 
 		command, ok := availableCommands[commandName]
@@ -33,14 +38,14 @@ func startRepl(c *Client) {
 			fmt.Println("invalid command")
 			continue
 		}
-		command.callback(c)
+		command.callback(c, params)
 	}
 }
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(c *Client) error
+	callback    func(c *Client, params string) error
 }
 
 func getComamnds() map[string]cliCommand {
@@ -64,6 +69,11 @@ func getComamnds() map[string]cliCommand {
 			name:        "mapb",
 			description: "Displayes the name of the previous 20 locations",
 			callback:    callbackMapB,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Displayes all encounterable Pokenmons, write explore + location",
+			callback:    callbackExplore,
 		},
 	}
 }
