@@ -6,6 +6,9 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
+
+	"github.com/RafaelTauschek/pokedexcli/internal/pokecache"
 )
 
 func startRepl(c *Client) {
@@ -75,6 +78,7 @@ type Client struct {
 	client          *http.Client
 	nextLocationURL *string
 	prevLocationURL *string
+	cache           *pokecache.Cache
 }
 
 func NewClient() *Client {
@@ -83,6 +87,7 @@ func NewClient() *Client {
 		client:          &http.Client{},
 		nextLocationURL: &baseURL,
 		prevLocationURL: nil,
+		cache:           pokecache.NewCache(5 * time.Minute),
 	}
 }
 

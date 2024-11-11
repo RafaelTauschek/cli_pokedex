@@ -25,20 +25,24 @@ func callbackMap(c *Client) error {
 		return nil
 	}
 
-	res, err := http.Get(*c.nextLocationURL)
-	if err != nil {
-		return err
-	}
+	data, found := c.cache.Get(*c.nextLocationURL)
 
-	body, err := io.ReadAll(res.Body)
-	res.Body.Close()
+	if !found {
+		res, err := http.Get(*c.nextLocationURL)
+		if err != nil {
+			return err
+		}
+		data, err = io.ReadAll(res.Body)
+		res.Body.Close()
 
-	if err != nil {
-		return err
+		if err != nil {
+			return err
+		}
+		c.cache.Add(*c.nextLocationURL, data)
 	}
 
 	var locations LocationsJSON
-	err = json.Unmarshal(body, &locations)
+	err := json.Unmarshal(data, &locations)
 	if err != nil {
 		return err
 	}
@@ -59,19 +63,24 @@ func callbackMapB(c *Client) error {
 		return nil
 	}
 
-	res, err := http.Get(*c.prevLocationURL)
-	if err != nil {
-		return err
-	}
+	data, found := c.cache.Get(*c.prevLocationURL)
 
-	body, err := io.ReadAll(res.Body)
-	res.Body.Close()
-	if err != nil {
-		return err
+	if !found {
+		res, err := http.Get(*c.prevLocationURL)
+		if err != nil {
+			return err
+		}
+
+		data, err = io.ReadAll(res.Body)
+		res.Body.Close()
+		if err != nil {
+			return err
+		}
+		c.cache.Add(*c.prevLocationURL, data)
 	}
 
 	var locations LocationsJSON
-	err = json.Unmarshal(body, &locations)
+	err := json.Unmarshal(data, &locations)
 
 	if err != nil {
 		return err
