@@ -80,6 +80,16 @@ func getComamnds() map[string]cliCommand {
 			description: "Takes the name of a Pokemon as Argument, tries to catch it",
 			callback:    callbackCatch,
 		},
+		"inspect": {
+			name:        "inspect",
+			description: "Takes the name of a Pokemon as Argument, if you caught that Pokemon, show the stats",
+			callback:    callbackInspect,
+		},
+		"pokedex": {
+			name:        "pokedex",
+			description: "Lists all caught Pokemon",
+			callback:    callbackPokedex,
+		},
 	}
 }
 
@@ -104,6 +114,7 @@ func NewClient() *Client {
 		nextLocationURL: &baseURL,
 		prevLocationURL: nil,
 		cache:           pokecache.NewCache(5 * time.Minute),
+		caughtPokemon:   make(map[string]Pokemon),
 	}
 }
 
