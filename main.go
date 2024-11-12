@@ -75,6 +75,11 @@ func getComamnds() map[string]cliCommand {
 			description: "Displayes all encounterable Pokenmons, write explore + location",
 			callback:    callbackExplore,
 		},
+		"catch": {
+			name:        "catch",
+			description: "Takes the name of a Pokemon as Argument, tries to catch it",
+			callback:    callbackCatch,
+		},
 	}
 }
 
@@ -89,6 +94,7 @@ type Client struct {
 	nextLocationURL *string
 	prevLocationURL *string
 	cache           *pokecache.Cache
+	caughtPokemon   map[string]Pokemon
 }
 
 func NewClient() *Client {
